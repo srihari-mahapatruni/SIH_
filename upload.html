@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Upload — VT Translate</title>
+  <style>
+    :root{
+      --olive-700:#556B2F; --olive-600:#6B8E23; --olive-500:#7A9A38;
+      --sage-300:#A8B98A; --cream:#F7F4EA; --eggshell:#EFEBDD; --sand:#E6DDC6;
+      --ink:#262A21; --muted:#6D7563; --white:#fff; --radius:16px;
+      --shadow:0 12px 30px rgba(38,42,33,.09);
+    }
+    *{box-sizing:border-box} body{margin:0; font:16px/1.6 system-ui,-apple-system,Segoe UI,Inter,Roboto,Arial,sans-serif; color:var(--ink);
+      background:linear-gradient(180deg, var(--eggshell), var(--cream))}
+    a{color:var(--olive-700); text-decoration:none}
+    .container{max-width:900px; margin:0 auto; padding:24px}
+    header{position:sticky; top:0; backdrop-filter:saturate(120%) blur(6px); background:rgba(255,255,255,.6); border-bottom:1px solid var(--sand)}
+    .nav{display:flex; align-items:center; justify-content:space-between}
+    .brand{display:flex; align-items:center; gap:10px; font-weight:700}
+    .brand .mark{width:28px;height:28px;border-radius:9px; background:linear-gradient(135deg,var(--olive-600), var(--sage-300)); box-shadow:0 6px 18px rgba(107,142,35,.25); display:grid;place-items:center;color:#fff}
+    .menu{display:flex; gap:16px; align-items:center}
+    .menu a{padding:8px 10px; border-radius:10px}
+    .menu a:hover{background:rgba(91,109,64,.08)}
+    h1{font-size:30px; margin:18px 0}
+    .panel{
+      background:#fff; border:1px solid var(--sand); border-radius:var(--radius);
+      box-shadow:var(--shadow); padding:22px; margin-top:16px;
+    }
+    .row{display:flex; gap:16px; flex-wrap:wrap}
+    .col{flex:1 1 260px}
+    label{display:block; font-weight:600; margin-bottom:8px}
+    select,.input,button{
+      width:100%; padding:12px 14px; border-radius:12px; border:1px solid var(--sand);
+      background:#fff; color:var(--ink)
+    }
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center; gap:8px;
+      padding:12px 18px; border-radius:14px; background:linear-gradient(135deg,var(--olive-600), var(--olive-700));
+      color:#fff; border:1px solid rgba(0,0,0,.05); box-shadow:var(--shadow); font-weight:700; cursor:pointer;
+    }
+    .btn:disabled{opacity:.6; cursor:not-allowed}
+    .drop{
+      border:2px dashed rgba(91,109,64,.35); border-radius:16px; padding:26px; text-align:center; background:rgba(255,255,255,.7)
+    }
+    .drop:hover{background:rgba(255,255,255,.9)}
+    .help{color:var(--muted); font-size:14px}
+    .opts{display:flex; gap:10px; flex-wrap:wrap; margin-top:8px}
+    .chip{display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border-radius:999px; border:1px solid var(--sand); background:#fff}
+    progress{width:100%; height:10px; border-radius:999px; overflow:hidden; appearance:none}
+    progress::-webkit-progress-bar{background:#eee; border-radius:999px}
+    progress::-webkit-progress-value{background:linear-gradient(90deg,var(--olive-600), var(--sage-300))}
+    .tiny{font-size:13px; color:var(--muted)}
+    footer{margin-top:20px; color:var(--muted); font-size:14px; text-align:center}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <div class="brand"><div class="mark">⟡</div> <span>VT Translate</span></div>
+      <nav class="menu">
+        <a href="index.html">⌂ Home</a>
+        <a href="dashboard.html">📊 Dashboard</a>
+        <a href="about.html">❔ Help</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1>⬆ Upload your file</h1>
+
+    <div class="panel">
+      <div class="drop" id="drop">
+        <p>Drag & drop video/audio/text/PDF here</p>
+        <p class="help">or</p>
+        <label class="btn" style="width:auto; cursor:pointer;">
+          📤 Choose file
+          <input id="fileInput" type="file" hidden />
+        </label>
+        <p class="tiny" id="fileName">No file selected</p>
+      </div>
+
+      <div class="row" style="margin-top:18px">
+        <div class="col">
+          <label for="lang">Target language</label>
+          <select id="lang">
+            <option value="hi">हिन्दी (Hindi)</option>
+            <option value="bn">বাংলা (Bengali)</option>
+            <option value="ta">தமிழ் (Tamil)</option>
+            <option value="te">తెలుగు (Telugu)</option>
+            <option value="mr">मराठी (Marathi)</option>
+            <option value="gu">ગુજરાતી (Gujarati)</option>
+            <option value="kn">ಕನ್ನಡ (Kannada)</option>
+            <option value="ml">മലയാളം (Malayalam)</option>
+            <option value="pa">ਪੰਜਾਬੀ (Punjabi)</option>
+            <option value="or">ଓଡ଼ିଆ (Odia)</option>
+            <option value="ur">اردو (Urdu)</option>
+          </select>
+        </div>
+        <div class="col">
+          <label>Outputs</label>
+          <div class="opts">
+            <label class="chip"><input type="checkbox" checked /> <span>🔤 Text</span></label>
+            <label class="chip"><input type="checkbox" checked /> <span>🎬 SRT</span></label>
+            <label class="chip"><input type="checkbox" /> <span>🔉 Dubbed audio</span></label>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:18px">
+        <button class="btn" id="startBtn" disabled>⏳ Start translation</button>
+      </div>
+
+      <div style="margin-top:14px; display:none" id="progWrap">
+        <label>Progress</label>
+        <progress id="prog" max="100" value="0"></progress>
+        <div class="tiny" id="status">Waiting…</div>
+      </div>
+    </div>
+
+    <footer>Files are processed securely. You’ll be able to download results on completion.</footer>
+  </main>
+
+  <script>
+    const fileInput = document.getElementById('fileInput');
+    const fileName = document.getElementById('fileName');
+    const startBtn = document.getElementById('startBtn');
+    const progWrap = document.getElementById('progWrap');
+    const prog = document.getElementById('prog');
+    const status = document.getElementById('status');
+    const drop = document.getElementById('drop');
+
+    function enableStart() {
+      startBtn.disabled = !fileInput.files.length;
+      fileName.textContent = fileInput.files.length ? `Selected: ${fileInput.files[0].name}` : 'No file selected';
+    }
+
+    fileInput.addEventListener('change', enableStart);
+    ;['dragenter','dragover'].forEach(ev => drop.addEventListener(ev, e=>{ e.preventDefault(); drop.style.background='rgba(255,255,255,.9)'; }));
+    ;['dragleave','drop'].forEach(ev => drop.addEventListener(ev, e=>{ e.preventDefault(); drop.style.background='rgba(255,255,255,.7)'; }));
+    drop.addEventListener('drop', e=>{
+      const dt=e.dataTransfer; if(dt?.files?.length){ fileInput.files=dt.files; enableStart(); }
+    });
+
+    startBtn.addEventListener('click', ()=>{
+      progWrap.style.display = 'block';
+      status.textContent = 'Uploading…';
+      let v=0;
+      const tick = setInterval(()=>{
+        v += Math.random()*8+2;
+        if(v>=100){ v=100; clearInterval(tick); status.textContent='Done! Redirecting to results…'; setTimeout(()=>{ window.location.href='results.html'; }, 600); }
+        else if(v>50 && v<70){ status.textContent='Transcribing…'; }
+        else if(v>=70 && v<90){ status.textContent='Translating…'; }
+        else if(v>=90){ status.textContent='Finalizing…'; }
+        prog.value = v;
+      }, 200);
+    });
+  </script>
+</body>
+</html>
